@@ -20,6 +20,10 @@ pub struct Client {
 
 impl Client {
     /// Creates a new Bambu printer MQTT client.
+    ///
+    /// # Panics
+    ///
+    /// Panics if the MQTT client cannot be created.
     pub fn new<S: Into<String>>(ip: S, access_code: S, serial: S) -> Self {
         let host: String = format!("mqtts://{}:8883", ip.into());
         let access_code: String = access_code.into();
