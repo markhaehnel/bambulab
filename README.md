@@ -1,7 +1,7 @@
 # Bambulab API
 
 [![Docs](https://img.shields.io/docsrs/bambulab)](https://docs.rs/bambulab)
-[![GitHub workflow status](https://github.com/markhaehnel/bambulab/actions/workflows/cicd.yaml/badge.svg)](https://github.com/markhaehnel/bambulab/actions/workflows/cicd.yaml)
+[![GitHub workflow status](https://github.com/markhaehnel/bambulab/actions/workflows/ci.yaml/badge.svg)](https://github.com/markhaehnel/bambulab/actions/workflows/ci.yaml)
 [![Crates.io Version](https://img.shields.io/crates/v/bambulab)](https://crates.io/crates/bambulab)
 [![Crates.io Downloads](https://img.shields.io/crates/d/bambulab)](https://crates.io/crates/bambulab)
 [![License](https://img.shields.io/badge/license-MIT%2FApache--2.0-blue.svg)](#license)
