@@ -1,55 +1,37 @@
 use anyhow::Result;
-use rumqttc::{Event, Packet, Publish};
 
 use crate::message::Message;
 
-pub(crate) fn parse_event(event: Event) -> Result<Message> {
-    match event {
-        Event::Incoming(incoming) => match incoming {
-            Packet::Publish(message) => parse_publish(&message),
-            Packet::Connect(_) => Ok(Message::Connected),
-            Packet::Disconnect => Ok(Message::Disconnect),
-            other => Ok(Message::Unknown(format!("{other:?}"))),
-        },
-        Event::Outgoing(outgoing) => Ok(Message::Outgoing(format!("{outgoing:?}"))),
+pub(crate) fn parse_message(message: Option<paho_mqtt::Message>) -> Result<Message> {
+    if let Some(message) = message {
+        let payload_str = String::from_utf8(message.payload().to_vec())?;
+        Ok(Message::Info(payload_str))
+    } else {
+        Ok(Message::Unknown("Unknown message".into()))
     }
-}
-
-fn parse_publish(message: &Publish) -> Result<Message> {
-    let payload = String::from_utf8(message.payload.to_vec())?;
-
-    Ok(Message::Info(payload))
 }
 
 #[cfg(test)]
 mod tests {
-    use bytes::Bytes;
-    use rumqttc::{Outgoing, QoS};
-
     use super::*;
 
     #[test]
-    fn test_parse_event() {
-        let event = Event::Outgoing(Outgoing::Subscribe(0));
+    fn test_parse_message_some() {
+        let message = paho_mqtt::Message::new(
+            "device/123456789/report",
+            r#"{ "hello": "world" }"#,
+            paho_mqtt::QOS_2,
+        );
 
-        let result = parse_event(event).unwrap();
+        let result = parse_message(Some(message)).unwrap();
 
-        assert_eq!(result, Message::Outgoing("Subscribe(0)".into()));
+        assert_eq!(result, Message::Info(r#"{ "hello": "world" }"#.into()));
     }
 
     #[test]
-    fn test_parse_publish() {
-        let message = Publish {
-            dup: false,
-            qos: QoS::AtMostOnce,
-            retain: false,
-            topic: "device/123456789/report".to_string(),
-            pkid: 0,
-            payload: Bytes::from(r#"{ "hello": "world" }"#),
-        };
+    fn test_parse_message_none() {
+        let result = parse_message(None).unwrap();
 
-        let result = parse_publish(&message).unwrap();
-
-        assert_eq!(result, Message::Info(r#"{ "hello": "world" }"#.to_string()));
+        assert_eq!(result, Message::Unknown("Unknown message".into()));
     }
 }
