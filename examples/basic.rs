@@ -4,9 +4,13 @@ use bambulab::{client::Client, command::Command};
 
 #[tokio::main]
 async fn main() -> Result<()> {
-    let mut client = Client::new("<PRINTER-IP>", "<PRINTER-ACCESS-CODE>", "<PRINTER-SERIAL>");
+    let host = "printer-ip-or-hostname";
+    let access_code = "printer-access-code";
+    let serial = "printer-serial-number";
 
-    client.subscribe().await?;
+    let mut client = Client::new(host, access_code, serial);
+
+    client.connect().await?;
 
     client.publish(Command::PushAll).await?;
 
