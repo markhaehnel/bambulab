@@ -7,6 +7,7 @@ use tokio::sync::broadcast::Sender;
 
 use crate::{command::Command, message::Message, parser::parse_message};
 
+#[derive(Clone)]
 pub struct Client {
     pub host: String,
     pub access_code: String,

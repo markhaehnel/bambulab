@@ -40,6 +40,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let (tx, mut rx) = tokio::sync::broadcast::channel::<Message>(25);
 
     let mut client = Client::new(host, access_code, serial, tx);
+    let mut client_clone = client.clone();
 
     tokio::try_join!(
         tokio::spawn(async move {
@@ -49,8 +50,12 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
             loop {
                 let message = rx.recv().await.unwrap();
                 println!("received: {message:?}");
+
+                if message == Message::Connected {
+                    client_clone.publish(Command::PushAll).await.unwrap();
+                }
             }
-        })
+        }),
     )?;
 
     Ok(())
