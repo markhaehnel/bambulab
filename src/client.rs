@@ -69,12 +69,12 @@ impl Client {
         let msg_opt = self.stream.next().await;
 
         if let Some(Some(msg)) = msg_opt {
-            self.tx.send(parse_message(msg)?)?;
+            self.tx.send(parse_message(&msg)?)?;
         } else {
             // A "None" means we were disconnected. Try to reconnect...
             self.tx.send(Message::Disconnected)?;
 
-            while let Err(_) = self.client.reconnect().await {
+            while (self.client.reconnect().await).is_err() {
                 tokio::time::sleep(Duration::from_secs(1)).await;
                 self.tx.send(Message::Reconnecting)?;
             }
@@ -109,11 +109,9 @@ impl Client {
         Ok(())
     }
 
-    fn subscibe_to_device_report(&mut self) -> Result<()> {
+    fn subscibe_to_device_report(&mut self) {
         self.client
             .subscribe(&self.topic_device_report, paho_mqtt::QOS_0);
-
-        Ok(())
     }
 
     /// Runs the Bambu MQTT client.
@@ -126,10 +124,10 @@ impl Client {
     pub async fn run(&mut self) -> Result<()> {
         self.connect().await?;
 
-        self.subscibe_to_device_report()?;
+        self.subscibe_to_device_report();
 
         loop {
-            Client::poll(self).await?;
+            Self::poll(self).await?;
         }
     }
 
