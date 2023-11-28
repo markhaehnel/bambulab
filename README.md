@@ -6,9 +6,12 @@
 [![Crates.io Downloads](https://img.shields.io/crates/d/bambulab)](https://crates.io/crates/bambulab)
 [![License](https://img.shields.io/badge/license-MIT%2FApache--2.0-blue.svg)](#license)
 
-🚧 **WORK IN PROGRESS** 🚧
+> 🚧 **WORK IN PROGRESS** 🚧
+>
+> This crate is still in development and not ready for production use.
+> Breaking changes may occur at any time.
 
-bambulab is a asnyc Rust crate that provides an client for interacting with Bambu Lab devices.
+bambulab is a async Rust crate that provides a channel based client for interacting with Bambu Lab devices over their MQTT broker.
 
 ## Features
 
@@ -30,47 +33,54 @@ use bambulab::{client::Client, command::Command};
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
-  let host = "printer-ip-or-hostname";
-  let access_code = "printer-access-code";
-  let serial = "printer-serial-number";
+    let host = "printer-ip-or-hostname";
+    let access_code = "printer-access-code";
+    let serial = "printer-serial-number";
 
-  let mut client = Client::new(host, access_code, serial);
+    let (tx, mut rx) = tokio::sync::broadcast::channel::<Message>(25);
 
-  client.connect().await?;
+    let mut client = Client::new(host, access_code, serial, tx);
 
-  client.publish(Command::PushAll).await?;
+    tokio::try_join!(
+        tokio::spawn(async move {
+            client.run().await.unwrap();
+        }),
+        tokio::spawn(async move {
+            loop {
+                let message = rx.recv().await.unwrap();
+                println!("received: {message:?}");
+            }
+        })
+    )?;
 
-  loop {
-    let message = client.poll().await?;
-    println!("{message:?}");
-  }
+    Ok(())
 }
 ```
 
 Please note that you need to call subscribe() to allow the API to listen to messages.
 
-More examples available in the [examples](./../examples) directory.
+More examples available in the [examples](./examples) directory.
 
 ## FAQ
 
 ### How do I find the access code?
 
-The access code is a 6 digit code that is printed on the back of your printer. It is also available in the Bambu Lab app.
+You can find the access code in the printer settings under "WLAN" -> "Access Code".
 
 ### How do I find the serial number?
 
-The serial number is a 6 digit code that is printed on the back of your printer. It is also available in the Bambu Lab app.
+The serial can be found in the printer settings under "SN". 
 
 ## Contributing
 
-See the [contributing guidelines](./../CONTRIBUTING.md) for more information.
+See the [contributing guidelines](./CONTRIBUTING.md) for more information.
 
 ## License
 
 This code is licensed under either of
 
-- [MIT License](./../LICENSE-MIT)
-- [Apache-2.0 License](./../LICENSE-APACHE)
+- [MIT License](./LICENSE-MIT)
+- [Apache-2.0 License](./LICENSE-APACHE)
 
 at your option.
 
