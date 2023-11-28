@@ -12,22 +12,15 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_parse_message_some() {
+    fn test_parse_message() {
         let message = paho_mqtt::Message::new(
             "device/123456789/report",
             r#"{ "hello": "world" }"#,
             paho_mqtt::QOS_2,
         );
 
-        let result = parse_message(Some(message)).unwrap();
+        let result = parse_message(message).unwrap();
 
         assert_eq!(result, Message::Info(r#"{ "hello": "world" }"#.into()));
-    }
-
-    #[test]
-    fn test_parse_message_none() {
-        let result = parse_message(None).unwrap();
-
-        assert_eq!(result, Message::Unknown("Unknown message".into()));
     }
 }
