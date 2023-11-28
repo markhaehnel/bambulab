@@ -1,6 +1,6 @@
 use anyhow::Result;
 
-use bambulab::{client::Client, command::Command};
+use bambulab::{client::Client, message::Message};
 
 #[tokio::main]
 async fn main() -> Result<()> {
@@ -8,14 +8,21 @@ async fn main() -> Result<()> {
     let access_code = "printer-access-code";
     let serial = "printer-serial-number";
 
-    let mut client = Client::new(host, access_code, serial);
+    let (tx, mut rx) = tokio::sync::broadcast::channel::<Message>(25);
 
-    client.connect().await?;
+    let mut client = Client::new(host, access_code, serial, tx);
 
-    client.publish(Command::PushAll).await?;
+    tokio::try_join!(
+        tokio::spawn(async move {
+            client.run().await.unwrap();
+        }),
+        tokio::spawn(async move {
+            loop {
+                let message = rx.recv().await.unwrap();
+                println!("received: {message:?}");
+            }
+        })
+    )?;
 
-    loop {
-        let message = client.poll().await?;
-        println!("{message:?}");
-    }
+    Ok(())
 }

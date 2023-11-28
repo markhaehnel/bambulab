@@ -2,13 +2,9 @@ use anyhow::Result;
 
 use crate::message::Message;
 
-pub(crate) fn parse_message(message: Option<paho_mqtt::Message>) -> Result<Message> {
-    if let Some(message) = message {
-        let payload_str = String::from_utf8(message.payload().to_vec())?;
-        Ok(Message::Info(payload_str))
-    } else {
-        Ok(Message::Unknown("Unknown message".into()))
-    }
+pub(crate) fn parse_message(message: paho_mqtt::Message) -> Result<Message> {
+    let payload_str = String::from_utf8(message.payload().to_vec())?;
+    Ok(Message::Info(payload_str))
 }
 
 #[cfg(test)]
