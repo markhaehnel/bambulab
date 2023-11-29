@@ -1,8 +1,6 @@
 use std::time::Duration;
 
-use anyhow::Result;
 use futures::stream::StreamExt;
-use rand::Rng;
 use tokio::sync::broadcast::Sender;
 
 use crate::{command::Command, message::Message, parser::parse_message};
@@ -29,11 +27,11 @@ impl Client {
     ///
     /// Panics if the MQTT client cannot be created.
     pub fn new<S: Into<String>>(ip: S, access_code: S, serial: S, tx: Sender<Message>) -> Self {
-        let host: String = format!("mqtts://{}:8883", ip.into());
-        let access_code: String = access_code.into();
-        let serial: String = serial.into();
+        let host = format!("mqtts://{}:8883", ip.into());
+        let access_code = access_code.into();
+        let serial = serial.into();
 
-        let client_id = format!("bambu-api-{}", rand::thread_rng().gen_range(0..100));
+        let client_id = format!("bambu-api-{}", nanoid::nanoid!(8));
 
         let create_opts = paho_mqtt::CreateOptionsBuilder::new()
             .server_uri(&host)
@@ -47,12 +45,12 @@ impl Client {
         Self {
             host,
             access_code,
-            serial: serial.clone(),
+            topic_device_request: format!("device/{}/request", &serial),
+            topic_device_report: format!("device/{}/report", &serial),
+            serial,
             client,
             stream,
             tx,
-            topic_device_request: format!("device/{}/request", &serial),
-            topic_device_report: format!("device/{}/report", &serial),
         }
     }
 
@@ -66,11 +64,11 @@ impl Client {
     /// # Errors
     ///
     /// Returns an error if there was a problem polling for a message or parsing the event.
-    async fn poll(&mut self) -> Result<()> {
-        let msg_opt = self.stream.next().await;
+    async fn poll(&mut self) -> Result<(), Box<dyn std::error::Error>> {
+        let msg_opt = self.stream.next().await.flatten();
 
-        if let Some(Some(msg)) = msg_opt {
-            self.tx.send(parse_message(&msg)?)?;
+        if let Some(msg) = msg_opt {
+            self.tx.send(parse_message(&msg))?;
         } else {
             // A "None" means we were disconnected. Try to reconnect...
             self.tx.send(Message::Disconnected)?;
@@ -86,7 +84,7 @@ impl Client {
         Ok(())
     }
 
-    async fn connect(&mut self) -> Result<()> {
+    async fn connect(&self) -> Result<(), Box<dyn std::error::Error>> {
         let ssl_opts = paho_mqtt::SslOptionsBuilder::new()
             .disable_default_trust_store(true)
             .enable_server_cert_auth(false)
@@ -102,15 +100,13 @@ impl Client {
             .finalize();
 
         self.tx.send(Message::Connecting)?;
-
         self.client.connect(conn_opts).await?;
-
         self.tx.send(Message::Connected)?;
 
         Ok(())
     }
 
-    fn subscibe_to_device_report(&mut self) {
+    fn subscibe_to_device_report(&self) {
         self.client
             .subscribe(&self.topic_device_report, paho_mqtt::QOS_0);
     }
@@ -122,9 +118,8 @@ impl Client {
     ///
     /// Returns an error if there was a problem connecting to the MQTT broker
     /// or subscribing to the device report topic.
-    pub async fn run(&mut self) -> Result<()> {
+    pub async fn run(&mut self) -> Result<(), Box<dyn std::error::Error>> {
         self.connect().await?;
-
         self.subscibe_to_device_report();
 
         loop {
@@ -137,7 +132,7 @@ impl Client {
     /// # Errors
     ///
     /// Returns an error if there was a problem publishing the command.
-    pub async fn publish(&mut self, command: Command) -> Result<()> {
+    pub async fn publish(&self, command: Command) -> Result<(), Box<dyn std::error::Error>> {
         let payload = command.get_payload();
 
         let msg = paho_mqtt::Message::new(&self.topic_device_request, payload, paho_mqtt::QOS_0);
