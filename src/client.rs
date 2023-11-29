@@ -100,9 +100,7 @@ impl Client {
             .finalize();
 
         self.tx.send(Message::Connecting)?;
-
         self.client.connect(conn_opts).await?;
-
         self.tx.send(Message::Connected)?;
 
         Ok(())
@@ -122,7 +120,6 @@ impl Client {
     /// or subscribing to the device report topic.
     pub async fn run(&mut self) -> Result<(), Box<dyn std::error::Error>> {
         self.connect().await?;
-
         self.subscibe_to_device_report();
 
         loop {
