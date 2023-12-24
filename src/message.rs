@@ -6,6 +6,9 @@ use serde_json::Value;
 pub enum Message {
     Print(Print),
     Info(Info),
+    System(System),
+    /// The message could not be parsed. The `Option<String>` contains the raw message.
+    /// If the message could not be parsed as a string, the `Option` will be `None`.
     Unknown(Option<String>),
 
     Connecting,
@@ -217,4 +220,17 @@ pub struct InfoModule {
     pub sn: String,
     pub loader_ver: Option<String>,
     pub ota_ver: Option<String>,
+}
+
+#[derive(Default, Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct System {
+    pub system: SystemData,
+}
+
+#[derive(Default, Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct SystemData {
+    pub command: String,
+    pub sequence_id: String,
+    pub access_code: Option<String>,
+    pub result: String,
 }
