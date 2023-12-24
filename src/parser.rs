@@ -55,4 +55,33 @@ mod tests {
 
         assert!(matches!(result, Message::Print(_)));
     }
+
+    #[test]
+    fn test_paser_message_info() {
+        let message = paho_mqtt::Message::new(
+            "device/123456789/report",
+            r#"{
+                "info":{
+                    "command":"get_version",
+                    "sequence_id":"0",
+                    "module":[
+                        {
+                            "name":"ota",
+                            "project_name":"C11",
+                            "sw_ver":"01.04.02.00",
+                            "hw_ver":"OTA",
+                            "sn":"01S00C123400001"
+                        }
+                    ],
+                    "result":"success",
+                    "reason":""
+                }
+            }"#,
+            paho_mqtt::QOS_2,
+        );
+
+        let result = parse_message(&message);
+
+        assert!(matches!(result, Message::Info(_)));
+    }
 }

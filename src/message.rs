@@ -5,6 +5,7 @@ use serde_json::Value;
 #[serde(untagged)]
 pub enum Message {
     Print(Print),
+    Info(Info),
     Unknown(Option<String>),
 
     Connecting,
