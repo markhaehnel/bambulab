@@ -34,7 +34,7 @@ mod tests {
     }
 
     #[test]
-    fn test_parse_message_unknown_unparseble() {
+    fn test_parse_message_unknown_unparsable() {
         let message =
             paho_mqtt::Message::new("device/123456789/report", vec![255, 255], paho_mqtt::QOS_2);
 
@@ -54,5 +54,54 @@ mod tests {
         let result = parse_message(&message);
 
         assert!(matches!(result, Message::Print(_)));
+    }
+
+    #[test]
+    fn test_parse_message_info() {
+        let message = paho_mqtt::Message::new(
+            "device/123456789/report",
+            r#"{
+                "info":{
+                    "command":"get_version",
+                    "sequence_id":"0",
+                    "module":[
+                        {
+                            "name":"ota",
+                            "project_name":"C11",
+                            "sw_ver":"01.04.02.00",
+                            "hw_ver":"OTA",
+                            "sn":"01S00C123400001"
+                        }
+                    ],
+                    "result":"success",
+                    "reason":""
+                }
+            }"#,
+            paho_mqtt::QOS_2,
+        );
+
+        let result = parse_message(&message);
+
+        assert!(matches!(result, Message::Info(_)));
+    }
+
+    #[test]
+    fn test_parse_message_system() {
+        let message = paho_mqtt::Message::new(
+            "device/123456789/report",
+            r#"{
+                "system": {
+                  "command": "get_access_code",
+                  "sequence_id": "0",
+                  "access_code": "12312312",
+                  "result": "success"
+                }
+              }"#,
+            paho_mqtt::QOS_2,
+        );
+
+        let result = parse_message(&message);
+
+        assert!(matches!(result, Message::System(_)));
     }
 }

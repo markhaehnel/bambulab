@@ -5,6 +5,10 @@ use serde_json::Value;
 #[serde(untagged)]
 pub enum Message {
     Print(Print),
+    Info(Info),
+    System(System),
+    /// The message could not be parsed. The `Option<String>` contains the raw message.
+    /// If the message could not be parsed as a string, the `Option` will be `None`.
     Unknown(Option<String>),
 
     Connecting,
@@ -94,18 +98,18 @@ pub struct PrintOnline {
 
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct PrintAms {
-    pub ams: Vec<PrintAmsData>,
-    pub ams_exist_bits: String,
-    pub tray_exist_bits: String,
-    pub tray_is_bbl_bits: String,
-    pub tray_tar: String,
-    pub tray_now: String,
-    pub tray_pre: String,
-    pub tray_read_done_bits: String,
-    pub tray_reading_bits: String,
-    pub version: i64,
-    pub insert_flag: bool,
-    pub power_on_flag: bool,
+    pub ams: Option<Vec<PrintAmsData>>,
+    pub ams_exist_bits: Option<String>,
+    pub tray_exist_bits: Option<String>,
+    pub tray_is_bbl_bits: Option<String>,
+    pub tray_tar: Option<String>,
+    pub tray_now: Option<String>,
+    pub tray_pre: Option<String>,
+    pub tray_read_done_bits: Option<String>,
+    pub tray_reading_bits: Option<String>,
+    pub version: Option<i64>,
+    pub insert_flag: Option<bool>,
+    pub power_on_flag: Option<bool>,
 }
 
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
@@ -119,33 +123,33 @@ pub struct PrintAmsData {
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct PrintTray {
     pub id: String,
-    pub remain: i64,
-    pub k: f64,
-    pub n: f64,
-    pub tag_uid: String,
-    pub tray_id_name: String,
-    pub tray_info_idx: String,
-    pub tray_type: String,
-    pub tray_sub_brands: String,
-    pub tray_color: String,
-    pub tray_weight: String,
-    pub tray_diameter: String,
-    pub tray_temp: String,
-    pub tray_time: String,
-    pub bed_temp_type: String,
-    pub bed_temp: String,
-    pub nozzle_temp_max: String,
-    pub nozzle_temp_min: String,
-    pub xcam_info: String,
-    pub tray_uuid: String,
+    pub remain: Option<i64>,
+    pub k: Option<f64>,
+    pub n: Option<f64>,
+    pub tag_uid: Option<String>,
+    pub tray_id_name: Option<String>,
+    pub tray_info_idx: Option<String>,
+    pub tray_type: Option<String>,
+    pub tray_sub_brands: Option<String>,
+    pub tray_color: Option<String>,
+    pub tray_weight: Option<String>,
+    pub tray_diameter: Option<String>,
+    pub tray_temp: Option<String>,
+    pub tray_time: Option<String>,
+    pub bed_temp_type: Option<String>,
+    pub bed_temp: Option<String>,
+    pub nozzle_temp_max: Option<String>,
+    pub nozzle_temp_min: Option<String>,
+    pub xcam_info: Option<String>,
+    pub tray_uuid: Option<String>,
 }
 
 #[derive(Default, Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct PrintIpcam {
-    pub ipcam_dev: String,
-    pub ipcam_record: String,
-    pub timelapse: String,
-    pub mode_bits: i64,
+    pub ipcam_dev: Option<String>,
+    pub ipcam_record: Option<String>,
+    pub timelapse: Option<String>,
+    pub mode_bits: Option<i64>,
 }
 
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
@@ -180,17 +184,17 @@ pub struct PrintLightsReport {
 
 #[derive(Default, Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct PrintUpgradeState {
-    pub sequence_id: i64,
-    pub progress: String,
-    pub status: String,
-    pub consistency_request: bool,
-    pub dis_state: i64,
-    pub err_code: i64,
-    pub force_upgrade: bool,
-    pub message: String,
-    pub module: String,
-    pub new_version_state: i64,
-    pub new_ver_list: Vec<Value>,
+    pub sequence_id: Option<i64>,
+    pub progress: Option<String>,
+    pub status: Option<String>,
+    pub consistency_request: Option<bool>,
+    pub dis_state: Option<i64>,
+    pub err_code: Option<i64>,
+    pub force_upgrade: Option<bool>,
+    pub message: Option<String>,
+    pub module: Option<String>,
+    pub new_version_state: Option<i64>,
+    pub new_ver_list: Option<Vec<Value>>,
 }
 
 #[derive(Default, Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
@@ -216,4 +220,17 @@ pub struct InfoModule {
     pub sn: String,
     pub loader_ver: Option<String>,
     pub ota_ver: Option<String>,
+}
+
+#[derive(Default, Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct System {
+    pub system: SystemData,
+}
+
+#[derive(Default, Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct SystemData {
+    pub command: String,
+    pub sequence_id: String,
+    pub access_code: Option<String>,
+    pub result: String,
 }
