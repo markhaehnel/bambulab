@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.4.1] - 2024-02-03
+
+### Miscellaneous Tasks
+
+- Add changelog (#20)
+- Upgrade dependencies (#22)
+- Upgrade dependencies (#23)
+
 ## [0.4.0] - 2023-12-24
 
 ### Features
