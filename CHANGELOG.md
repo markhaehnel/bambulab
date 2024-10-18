@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.4.5](https://github.com/markhaehnel/bambulab/compare/v0.4.4...v0.4.5) - 2024-10-18
+
+### Other
+
+- *(deps)* bump serde from 1.0.203 to 1.0.210 ([#36](https://github.com/markhaehnel/bambulab/pull/36))
+- *(deps)* bump tokio from 1.38.0 to 1.40.0 ([#37](https://github.com/markhaehnel/bambulab/pull/37))
+- *(deps)* bump serde_json from 1.0.117 to 1.0.129 ([#35](https://github.com/markhaehnel/bambulab/pull/35))
+- *(deps)* bump futures from 0.3.30 to 0.3.31 ([#38](https://github.com/markhaehnel/bambulab/pull/38))
+- add release-plz
+
 ## [0.4.4] - 2024-06-15
 
 ### Miscellaneous Tasks
