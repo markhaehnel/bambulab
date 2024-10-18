@@ -3,8 +3,9 @@ use serde_json::Value;
 
 #[derive(Serialize, Deserialize, Debug, Clone, PartialEq)]
 #[serde(untagged)]
+#[allow(clippy::large_enum_variant)]
 pub enum Message {
-    Print(Print),
+    Print(Box<Print>),
     Info(Info),
     System(System),
     /// The message could not be parsed. The `Option<String>` contains the raw message.
