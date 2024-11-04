@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.4.8](https://github.com/markhaehnel/bambulab/compare/v0.4.7...v0.4.8) - 2024-11-04
+
+### Other
+
+- *(deps)* bump serde from 1.0.213 to 1.0.214 ([#46](https://github.com/markhaehnel/bambulab/pull/46))
+
 ## [0.4.7](https://github.com/markhaehnel/bambulab/compare/v0.4.6...v0.4.7) - 2024-10-28
 
 ### Other
