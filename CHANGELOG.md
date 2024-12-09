@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.4.11](https://github.com/markhaehnel/bambulab/compare/v0.4.10...v0.4.11) - 2024-12-09
+
+### Other
+
+- *(deps)* bump tokio from 1.41.1 to 1.42.0 (#53)
+
 ## [0.4.10](https://github.com/markhaehnel/bambulab/compare/v0.4.9...v0.4.10) - 2024-11-19
 
 ### Other
