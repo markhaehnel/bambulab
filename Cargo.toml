@@ -17,10 +17,10 @@ nanoid = "0.4.0"
 paho-mqtt = { version = "0.12.5" }
 serde = { version = "1.0.217", features = ["derive"] }
 serde_json = { version = "1.0.135" }
-tokio = { version = "1.42.0", features = ["macros", "sync", "time"] }
+tokio = { version = "1.43.0", features = ["macros", "sync", "time"] }
 
 [dev-dependencies]
-tokio = { version = "1.42.0", features = ["full"] }
+tokio = { version = "1.43.0", features = ["full"] }
 
 [profile.release]
 lto = true
