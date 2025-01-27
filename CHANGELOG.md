@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.4.16](https://github.com/markhaehnel/bambulab/compare/v0.4.15...v0.4.16) - 2025-01-27
+
+### Other
+
+- *(deps)* bump paho-mqtt from 0.12.5 to 0.13.0 (#65)
+
 ## [0.4.15](https://github.com/markhaehnel/bambulab/compare/v0.4.14...v0.4.15) - 2025-01-21
 
 ### Other
