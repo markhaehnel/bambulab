@@ -22,6 +22,10 @@ tokio = { version = "1.43.0", features = ["macros", "sync", "time"] }
 [dev-dependencies]
 tokio = { version = "1.43.0", features = ["full"] }
 
+[features]
+default = ["verify-tls"]
+verify-tls = []
+
 [profile.release]
 lto = true
 opt-level = "s"
