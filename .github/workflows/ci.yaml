@@ -28,5 +28,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions-rust-lang/setup-rust-toolchain@v1
-      - run: cargo build
+      - run: cargo build --all-features
+      - run: cargo build --no-default-features
       - run: cargo test

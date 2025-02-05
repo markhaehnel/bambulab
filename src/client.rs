@@ -1,4 +1,7 @@
-use std::{env::temp_dir, fs::File, io::Write, time::Duration};
+use std::time::Duration;
+
+#[cfg(feature = "verify-tls")]
+use std::{env::temp_dir, fs::File, io::Write};
 
 use futures::stream::StreamExt;
 use tokio::sync::broadcast::Sender;
@@ -84,15 +87,28 @@ impl Client {
         Ok(())
     }
 
-    async fn connect(&self) -> Result<(), Box<dyn std::error::Error>> {
+    #[cfg(feature = "verify-tls")]
+    fn get_ssl_opts() -> Result<paho_mqtt::SslOptions, Box<dyn std::error::Error>> {
         let ca_cert_bytes = include_bytes!("certs/bbl_ca.pem");
         let ca_cert_path = temp_dir().join("bbl_ca.pem");
         let mut ca_cert_file = File::create(&ca_cert_path)?;
         ca_cert_file.write_all(ca_cert_bytes)?;
-
-        let ssl_opts = paho_mqtt::SslOptionsBuilder::new()
+        Ok(paho_mqtt::SslOptionsBuilder::new()
             .trust_store(ca_cert_path)?
-            .finalize();
+            .finalize())
+    }
+
+    #[cfg(not(feature = "verify-tls"))]
+    fn get_ssl_opts() -> Result<paho_mqtt::SslOptions, Box<dyn std::error::Error>> {
+        Ok(paho_mqtt::SslOptionsBuilder::new()
+            .disable_default_trust_store(true)
+            .enable_server_cert_auth(false)
+            .verify(false)
+            .finalize())
+    }
+
+    async fn connect(&self) -> Result<(), Box<dyn std::error::Error>> {
+        let ssl_opts = Self::get_ssl_opts()?;
 
         let conn_opts = paho_mqtt::ConnectOptionsBuilder::new()
             .ssl_options(ssl_opts)
