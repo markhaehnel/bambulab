@@ -1,4 +1,4 @@
-use std::time::Duration;
+use std::{env::temp_dir, fs::File, io::Write, time::Duration};
 
 use futures::stream::StreamExt;
 use tokio::sync::broadcast::Sender;
@@ -85,10 +85,13 @@ impl Client {
     }
 
     async fn connect(&self) -> Result<(), Box<dyn std::error::Error>> {
+        let ca_cert_bytes = include_bytes!("certs/bbl_ca.pem");
+        let ca_cert_path = temp_dir().join("bbl_ca.pem");
+        let mut ca_cert_file = File::create(&ca_cert_path)?;
+        ca_cert_file.write_all(ca_cert_bytes)?;
+
         let ssl_opts = paho_mqtt::SslOptionsBuilder::new()
-            .disable_default_trust_store(true)
-            .enable_server_cert_auth(false)
-            .verify(false)
+            .trust_store(ca_cert_path)?
             .finalize();
 
         let conn_opts = paho_mqtt::ConnectOptionsBuilder::new()
