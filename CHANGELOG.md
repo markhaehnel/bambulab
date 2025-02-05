@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.4.17](https://github.com/markhaehnel/bambulab/compare/v0.4.16...v0.4.17) - 2025-02-05
+
+### Added
+
+- add feature toggle for tls verification (#71)
+- add basic TLS certificate validation (#67)
+
+### Other
+
+- *(deps)* bump serde_json from 1.0.137 to 1.0.138 (#68)
+
 ## [0.4.16](https://github.com/markhaehnel/bambulab/compare/v0.4.15...v0.4.16) - 2025-01-27
 
 ### Other
