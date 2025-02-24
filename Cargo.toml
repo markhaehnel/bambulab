@@ -14,7 +14,7 @@ categories = ["network-programming", "api-bindings"]
 [dependencies]
 futures = { version = "0.3.31", default-features = false }
 nanoid = "0.4.0"
-paho-mqtt = { version = "0.13.0" }
+paho-mqtt = { version = "0.13.1" }
 serde = { version = "1.0.217", features = ["derive"] }
 serde_json = { version = "1.0.138" }
 tokio = { version = "1.43.0", features = ["macros", "sync", "time"] }
