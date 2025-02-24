@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.4.18](https://github.com/markhaehnel/bambulab/compare/v0.4.17...v0.4.18) - 2025-02-24
+
+### Other
+
+- *(deps)* bump serde from 1.0.217 to 1.0.218 (#74)
+- *(deps)* bump serde_json from 1.0.138 to 1.0.139 (#73)
+- *(deps)* bump paho-mqtt from 0.13.0 to 0.13.1 (#72)
+
 ## [0.4.17](https://github.com/markhaehnel/bambulab/compare/v0.4.16...v0.4.17) - 2025-02-05
 
 ### Added
