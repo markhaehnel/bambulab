@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.4.20](https://github.com/markhaehnel/bambulab/compare/v0.4.19...v0.4.20) - 2025-03-16
+
+### Other
+
+- *(deps)* bump serde from 1.0.218 to 1.0.219 ([#79](https://github.com/markhaehnel/bambulab/pull/79))
+- *(deps)* bump tokio from 1.43.0 to 1.44.0 ([#78](https://github.com/markhaehnel/bambulab/pull/78))
+
 ## [0.4.19](https://github.com/markhaehnel/bambulab/compare/v0.4.18...v0.4.19) - 2025-03-03
 
 ### Other
