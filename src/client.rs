@@ -14,7 +14,7 @@ pub struct Client {
     pub access_code: String,
     pub serial: String,
 
-    client: paho_mqtt::AsyncClient,
+    mqtt: paho_mqtt::AsyncClient,
     stream: paho_mqtt::AsyncReceiver<Option<paho_mqtt::Message>>,
 
     tx: Sender<Message>,
@@ -42,8 +42,8 @@ impl Client {
             .max_buffered_messages(25)
             .finalize();
 
-        let mut client = paho_mqtt::AsyncClient::new(create_opts).expect("Failed to create client");
-        let stream = client.get_stream(25);
+        let mut mqtt = paho_mqtt::AsyncClient::new(create_opts).expect("Failed to create client");
+        let stream = mqtt.get_stream(25);
 
         Self {
             host,
@@ -51,7 +51,7 @@ impl Client {
             topic_device_request: format!("device/{}/request", &serial),
             topic_device_report: format!("device/{}/report", &serial),
             serial,
-            client,
+            mqtt,
             stream,
             tx,
         }
@@ -76,7 +76,7 @@ impl Client {
             // A "None" means we were disconnected. Try to reconnect...
             self.tx.send(Message::Disconnected)?;
 
-            while (self.client.reconnect().await).is_err() {
+            while (self.mqtt.reconnect().await).is_err() {
                 tokio::time::sleep(Duration::from_secs(1)).await;
                 self.tx.send(Message::Reconnecting)?;
             }
@@ -119,14 +119,14 @@ impl Client {
             .finalize();
 
         self.tx.send(Message::Connecting)?;
-        self.client.connect(conn_opts).await?;
+        self.mqtt.connect(conn_opts).await?;
         self.tx.send(Message::Connected)?;
 
         Ok(())
     }
 
     fn subscibe_to_device_report(&self) {
-        self.client
+        self.mqtt
             .subscribe(&self.topic_device_report, paho_mqtt::QOS_0);
     }
 
@@ -155,7 +155,7 @@ impl Client {
         let payload = command.get_payload();
 
         let msg = paho_mqtt::Message::new(&self.topic_device_request, payload, paho_mqtt::QOS_0);
-        self.client.publish(msg).await?;
+        self.mqtt.publish(msg).await?;
 
         Ok(())
     }
