@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file.
 
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [Unreleased]
+
+## [0.4.26](https://github.com/markhaehnel/bambulab/compare/v0.4.25...v0.4.26) - 2025-08-13
+
+### Other
+
+- *(deps)* bump serde_json from 1.0.140 to 1.0.142 ([#97](https://github.com/markhaehnel/bambulab/pull/97))
+- *(deps)* bump tokio from 1.45.0 to 1.47.1 ([#96](https://github.com/markhaehnel/bambulab/pull/96))
+# Changelog
+
+All notable changes to this project will be documented in this file.
+
 ## [0.4.25](https://github.com/markhaehnel/bambulab/compare/v0.4.24...v0.4.25) - 2025-05-13
 
 ### Other
