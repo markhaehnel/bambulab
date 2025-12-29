@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.4.27](https://github.com/markhaehnel/bambulab/compare/v0.4.26...v0.4.27) - 2025-12-29
+
+### Other
+
+- *(deps)* bump tokio from 1.47.1 to 1.48.0 ([#105](https://github.com/markhaehnel/bambulab/pull/105))
+- *(deps)* bump actions/checkout from 4 to 6 ([#106](https://github.com/markhaehnel/bambulab/pull/106))
+- *(deps)* bump serde_json from 1.0.142 to 1.0.148 ([#107](https://github.com/markhaehnel/bambulab/pull/107))
+
 ## [0.4.26](https://github.com/markhaehnel/bambulab/compare/v0.4.25...v0.4.26) - 2025-08-13
 
 ### Other
