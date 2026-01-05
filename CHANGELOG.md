@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.4.28](https://github.com/markhaehnel/bambulab/compare/v0.4.27...v0.4.28) - 2026-01-05
+
+### Other
+
+- *(deps)* bump tokio from 1.48.0 to 1.49.0 ([#109](https://github.com/markhaehnel/bambulab/pull/109))
+
 ## [0.4.27](https://github.com/markhaehnel/bambulab/compare/v0.4.26...v0.4.27) - 2025-12-29
 
 ### Other
