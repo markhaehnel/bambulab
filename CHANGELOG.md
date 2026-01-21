@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.4.29](https://github.com/markhaehnel/bambulab/compare/v0.4.28...v0.4.29) - 2026-01-21
+
+### Other
+
+- *(deps)* bump serde_json from 1.0.148 to 1.0.149 ([#111](https://github.com/markhaehnel/bambulab/pull/111))
+
 ## [0.4.28](https://github.com/markhaehnel/bambulab/compare/v0.4.27...v0.4.28) - 2026-01-05
 
 ### Other
