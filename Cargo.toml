@@ -12,7 +12,7 @@ categories = ["network-programming", "api-bindings"]
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-futures = { version = "0.3.31", default-features = false }
+futures = { version = "0.3.32", default-features = false }
 nanoid = "0.4.0"
 paho-mqtt = { version = "0.13.3" }
 serde = { version = "1.0.219", features = ["derive"] }
