@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.4.30](https://github.com/markhaehnel/bambulab/compare/v0.4.29...v0.4.30) - 2026-05-05
+
+### Other
+
+- *(deps)* bump paho-mqtt from 0.13.3 to 0.14.0 ([#116](https://github.com/markhaehnel/bambulab/pull/116))
+- *(deps)* bump tokio from 1.49.0 to 1.52.2 ([#121](https://github.com/markhaehnel/bambulab/pull/121))
+- *(deps)* bump nanoid from 0.4.0 to 0.5.0 ([#120](https://github.com/markhaehnel/bambulab/pull/120))
+- *(deps)* bump rand from 0.8.5 to 0.8.6 ([#119](https://github.com/markhaehnel/bambulab/pull/119))
+- *(deps)* bump futures from 0.3.31 to 0.3.32 ([#114](https://github.com/markhaehnel/bambulab/pull/114))
+- *(ci)* add trusted publishing ([#122](https://github.com/markhaehnel/bambulab/pull/122))
+
 ## [0.4.29](https://github.com/markhaehnel/bambulab/compare/v0.4.28...v0.4.29) - 2026-01-21
 
 ### Other
