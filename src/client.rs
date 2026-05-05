@@ -15,7 +15,7 @@ pub struct Client {
     pub serial: String,
 
     mqtt: paho_mqtt::AsyncClient,
-    stream: paho_mqtt::AsyncReceiver<Option<paho_mqtt::Message>>,
+    stream: std::pin::Pin<Box<paho_mqtt::AsyncReceiver<Option<paho_mqtt::Message>>>>,
 
     tx: Sender<Message>,
 
@@ -43,7 +43,7 @@ impl Client {
             .finalize();
 
         let mut mqtt = paho_mqtt::AsyncClient::new(create_opts).expect("Failed to create client");
-        let stream = mqtt.get_stream(25);
+        let stream = Box::pin(mqtt.get_stream(25));
 
         Self {
             host,
@@ -115,7 +115,7 @@ impl Client {
             .keep_alive_interval(Duration::from_secs(5))
             .connect_timeout(Duration::from_secs(3))
             .user_name("bblp")
-            .password(&self.access_code)
+            .password(self.access_code.as_str())
             .finalize();
 
         self.tx.send(Message::Connecting)?;
