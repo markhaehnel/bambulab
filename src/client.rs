@@ -48,8 +48,8 @@ impl Client {
         Self {
             host,
             access_code,
-            topic_device_request: format!("device/{}/request", &serial),
-            topic_device_report: format!("device/{}/report", &serial),
+            topic_device_request: format!("device/{serial}/request"),
+            topic_device_report: format!("device/{serial}/report"),
             serial,
             mqtt,
             stream,
