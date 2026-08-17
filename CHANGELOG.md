@@ -7,6 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.4.31](https://github.com/markhaehnel/bambulab/compare/v0.4.30...v0.4.31) - 2026-08-17
+
+### Fixed
+
+- inline serial in MQTT topic formats ([#132](https://github.com/markhaehnel/bambulab/pull/132))
+
+### Other
+
+- *(deps)* bump serde from 1.0.228 to 1.0.229 ([#127](https://github.com/markhaehnel/bambulab/pull/127))
+- *(deps)* bump futures from 0.3.32 to 0.3.33 ([#128](https://github.com/markhaehnel/bambulab/pull/128))
+- *(deps)* bump serde_json from 1.0.149 to 1.0.151 ([#130](https://github.com/markhaehnel/bambulab/pull/130))
+- *(deps)* bump tokio from 1.52.2 to 1.53.1 ([#131](https://github.com/markhaehnel/bambulab/pull/131))
+- *(deps)* bump actions/checkout from 6 to 7 ([#126](https://github.com/markhaehnel/bambulab/pull/126))
+
 ## [0.4.30](https://github.com/markhaehnel/bambulab/compare/v0.4.29...v0.4.30) - 2026-05-05
 
 ### Other
